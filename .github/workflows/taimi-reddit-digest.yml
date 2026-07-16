@@ -1,0 +1,26 @@
+name: Taimi Reddit Digest
+
+on:
+  schedule:
+    # 07:10 UTC = 10:10 AM Kyiv (UTC+3)
+    - cron: "10 7 * * *"
+  workflow_dispatch:  # allows manual "Run workflow" trigger from GitHub UI
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run Taimi Reddit Monitor
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: python taimi_reddit_monitor.py
