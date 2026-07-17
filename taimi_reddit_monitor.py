@@ -30,6 +30,7 @@ COMMENT_SUBREDDITS = [
     "FTMStraight", "FemboysDating", "feminineboys",
     "dating_advice", "OnlineDating", "datingapps", "Tinder",
     "relationships", "relationship_advice", "relationships_advice",
+    "Sissy", "PNW_Sissies", "sissyology", "bisexualafterdark",
     "countttt", "BDSMsapphic",
 ]
 
