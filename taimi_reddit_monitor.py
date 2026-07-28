@@ -31,7 +31,7 @@ COMMENT_SUBREDDITS = [
     "dating_advice", "OnlineDating", "datingapps", "Tinder",
     "relationships", "relationship_advice", "relationships_advice",
     "Sissy", "PNW_Sissies", "sissyology", "bisexualafterdark",
-    "countttt", "BDSMsapphic",
+    "countttt", "BDSMsapphic", "phallo",
 ]
 
 def _fetch_url(url):
