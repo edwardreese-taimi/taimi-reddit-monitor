@@ -34,6 +34,31 @@ COMMENT_SUBREDDITS = [
     "countttt", "BDSMsapphic", "phallo",
 ]
 
+POSITIVE_WORDS = {
+    "love", "great", "amazing", "awesome", "excellent", "fantastic", "wonderful",
+    "recommend", "best", "good", "helpful", "perfect", "beautiful", "happy",
+    "enjoy", "enjoyed", "enjoying", "like", "liked", "appreciate", "appreciated",
+    "safe", "welcoming", "inclusive", "supportive", "glad", "works", "working",
+}
+
+NEGATIVE_WORDS = {
+    "hate", "terrible", "awful", "worst", "bad", "horrible", "disgusting",
+    "scam", "fake", "dangerous", "delete", "banned", "ban", "inappropriate",
+    "offensive", "creepy", "disappointing", "disappointed", "ugly",
+    "problem", "issue", "broken", "failed", "fail", "sucks", "suck",
+    "predatory", "toxic", "abuse", "abusive", "gross", "sketchy",
+}
+
+def classify_sentiment(text):
+    words = set(re.findall(r'\b\w+\b', text.lower()))
+    pos = len(words & POSITIVE_WORDS)
+    neg = len(words & NEGATIVE_WORDS)
+    if pos > neg:
+        return "🟢"
+    elif neg > pos:
+        return "🔴"
+    return "🟡"
+
 def _fetch_url(url):
     for attempt in range(1, MAX_RETRIES + 1):
         req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
@@ -191,7 +216,8 @@ def build_slack_message(entries, query):
                 ts = p["updated"].strftime("%H:%M UTC")
                 score = p.get("score")
                 score_str = f" · ▲ {score}" if score is not None else ""
-                lines.append(f"• <{p['url']}|{p['title']}> by u/{p['author']} at {ts}{score_str}")
+                sentiment = classify_sentiment(p["preview"] + " " + p["title"])
+                lines.append(f"{sentiment} <{p['url']}|{p['title']}> by u/{p['author']} at {ts}{score_str}")
                 preview = p["preview"]
                 if preview and preview not in p["title"]:
                     lines.append(f"  _{preview[:150]}_")
