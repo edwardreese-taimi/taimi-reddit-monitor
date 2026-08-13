@@ -50,12 +50,31 @@ NEGATIVE_WORDS = {
 }
 
 def classify_sentiment(text):
-    words = set(re.findall(r'\b\w+\b', text.lower()))
-    pos = len(words & POSITIVE_WORDS)
-    neg = len(words & NEGATIVE_WORDS)
-    if pos > neg:
+    # Only score words near "taimi" mentions so we assess sentiment
+    # *about Taimi*, not the general topic of the post.
+    text_lower = text.lower()
+    taimi_positions = [m.start() for m in re.finditer(r'\btaimi\b', text_lower)]
+    words_with_pos = [(m.start(), m.group()) for m in re.finditer(r'\b\w+\b', text_lower)]
+    WINDOW = 100  # characters on each side of a "taimi" mention
+    pos_score = 0
+    neg_score = 0
+    if taimi_positions:
+        for word_pos, word in words_with_pos:
+            if any(abs(word_pos - tp) <= WINDOW for tp in taimi_positions):
+                if word in POSITIVE_WORDS:
+                    pos_score += 1
+                elif word in NEGATIVE_WORDS:
+                    neg_score += 1
+    else:
+        # Post from a Taimi-dedicated subreddit — score title words only
+        for _, word in words_with_pos:
+            if word in POSITIVE_WORDS:
+                pos_score += 1
+            elif word in NEGATIVE_WORDS:
+                neg_score += 1
+    if pos_score > neg_score:
         return "🟢"
-    elif neg > pos:
+    elif neg_score > pos_score:
         return "🔴"
     return "🟡"
 
