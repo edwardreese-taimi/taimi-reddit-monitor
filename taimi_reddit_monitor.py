@@ -148,6 +148,16 @@ def fetch_posts(query):
     entries = _parse_atom(data, "post")
     return [e for e in entries if e["kind"] == "post"]
 
+def fetch_comments_global(query):
+    encoded = urllib.request.quote(query)
+    url = f"https://www.reddit.com/search.rss?q={encoded}&sort=new&t=day&limit={MAX_POSTS}&type=comment"
+    print("  Fetching comments from global search RSS...")
+    data = _fetch_url(url)
+    if data is None:
+        return []
+    entries = _parse_atom(data, "comment")
+    return [e for e in entries if e["kind"] == "comment"]
+
 def fetch_all_posts_from_subreddits(subreddits):
     all_posts = []
     for sub in subreddits:
@@ -274,9 +284,11 @@ def main():
     print(f"  Posts found (keyword search): {len(posts)}")
     full_sub_posts = fetch_all_posts_from_subreddits(FULL_SUBREDDITS)
     print(f"  Posts found (full subreddits): {len(full_sub_posts)}")
+    global_comments = fetch_comments_global(SEARCH_QUERY)
+    print(f"  Comments found (global search): {len(global_comments)}")
     comments = fetch_comments_from_subreddits(SEARCH_QUERY, COMMENT_SUBREDDITS)
-    print(f"  Comments found: {len(comments)}")
-    all_entries = posts + full_sub_posts + comments
+    print(f"  Comments found (subreddit scan): {len(comments)}")
+    all_entries = posts + full_sub_posts + global_comments + comments
     filtered = filter_entries(all_entries, EXCLUDED_SUBREDDITS, LOOKBACK_HOURS)
     print(f"  After dedup/filter: {len(filtered)}")
     if filtered:
