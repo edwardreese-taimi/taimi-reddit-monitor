@@ -47,6 +47,9 @@ NEGATIVE_WORDS = {
     "offensive", "creepy", "disappointing", "disappointed", "ugly",
     "problem", "issue", "broken", "failed", "fail", "sucks", "suck",
     "predatory", "toxic", "abuse", "abusive", "gross", "sketchy",
+    "uncomfortable", "chasers", "chaser", "harassed", "harassment",
+    "ghosted", "creeps", "creep", "unmatched", "bots", "bot",
+    "frustrating", "frustrated", "useless", "waste", "dead", "nobody",
 }
 
 def classify_sentiment(text):
