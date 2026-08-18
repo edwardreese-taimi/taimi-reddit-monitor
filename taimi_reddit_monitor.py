@@ -154,7 +154,7 @@ def fetch_all_posts_from_subreddits(subreddits):
         url = f"https://www.reddit.com/r/{sub}/new.rss?limit={MAX_POSTS}"
         print(f"  Fetching all posts from r/{sub}...")
         data = _fetch_url(url)
-        time.sleep(1)
+        time.sleep(0.5)
         if data is None:
             continue
         entries = _parse_atom(data, "post")
@@ -168,7 +168,7 @@ def fetch_comments_from_subreddits(query, subreddits):
         url = f"https://www.reddit.com/r/{sub}/comments.rss?limit={MAX_COMMENTS_PER_SUB}"
         print(f"  Scanning r/{sub} comments...")
         data = _fetch_url(url)
-        time.sleep(1)
+        time.sleep(0.5)
         if data is None:
             continue
         entries = _parse_atom(data, "comment")
@@ -193,7 +193,7 @@ def enrich_with_scores(entries):
         url = entry.get("url", "")
         if "/comments/" in url:
             entry["score"] = _fetch_score(url)
-            time.sleep(1)
+            time.sleep(0.5)
     return entries
 
 def filter_entries(entries, excluded, hours):
