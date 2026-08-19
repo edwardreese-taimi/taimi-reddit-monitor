@@ -50,6 +50,8 @@ NEGATIVE_WORDS = {
     "uncomfortable", "chasers", "chaser", "harassed", "harassment",
     "ghosted", "creeps", "creep", "unmatched", "bots", "bot",
     "frustrating", "frustrated", "useless", "waste", "dead", "nobody",
+    "desperate", "desperately", "drought", "lonely", "alone",
+    "nowhere", "upset", "limited", "empty", "zero", "racist", "racism",
 }
 
 def classify_sentiment(text):
