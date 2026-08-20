@@ -13,7 +13,7 @@ import re
 from datetime import datetime, timezone, timedelta
 
 SEARCH_QUERY = "Taimi"
-EXCLUDED_SUBREDDITS = {"Guildwars2", "dreamcast", "pokemongo", "rdcworld", "MapPorn", "koirajuorut", "occitan", "Eesti", "TwinCitiesFood", "China_irl", "dreamingspanish", "TwitchFollowers"}
+EXCLUDED_SUBREDDITS = {"Guildwars2", "dreamcast", "pokemongo", "rdcworld", "MapPorn", "koirajuorut", "occitan", "Eesti", "TwinCitiesFood", "China_irl", "dreamingspanish", "TwitchFollowers", "MumbaiMarketplace"}
 SLACK_CHANNEL = "#taimi-reddit-mentions"
 LOOKBACK_HOURS = 24
 MAX_POSTS = 100
@@ -52,6 +52,8 @@ NEGATIVE_WORDS = {
     "frustrating", "frustrated", "useless", "waste", "dead", "nobody",
     "desperate", "desperately", "drought", "lonely", "alone",
     "nowhere", "upset", "limited", "empty", "zero", "racist", "racism",
+    "complaint", "complain", "complains", "quit", "quitting",
+    "leaving", "leave", "switching", "switch", "confused", "alternative", "alternatives",
 }
 
 def classify_sentiment(text):
