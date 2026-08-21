@@ -32,6 +32,7 @@ COMMENT_SUBREDDITS = [
     "relationships", "relationship_advice", "relationships_advice",
     "Sissy", "PNW_Sissies", "sissyology", "bisexualafterdark",
     "countttt", "BDSMsapphic", "phallo", "BlackTransPeople", "transplace", "transfurs",
+    "femboyjerkbud", "TransNewWorldOrder",
 ]
 
 POSITIVE_WORDS = {
