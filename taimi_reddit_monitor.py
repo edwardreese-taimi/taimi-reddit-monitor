@@ -57,6 +57,9 @@ NEGATIVE_WORDS = {
     "leaving", "leave", "switching", "switch", "confused", "alternative", "alternatives",
 }
 
+MIXED_WORDS = {"mixed", "mixed reviews", "unsure", "uncertain", "depends", "varies"}
+
+
 def classify_sentiment(text):
     # Only score words near "taimi" mentions so we assess sentiment
     # *about Taimi*, not the general topic of the post.
@@ -71,6 +74,11 @@ def classify_sentiment(text):
         for tp in taimi_positions:
             window_text = text_lower[max(0, tp - WINDOW):tp + WINDOW]
             if '?' in window_text:
+                return "🟡"
+        # Mixed-sentiment phrases near Taimi → neutral
+        for tp in taimi_positions:
+            window_text = text_lower[max(0, tp - WINDOW):tp + WINDOW]
+            if any(w in window_text for w in MIXED_WORDS):
                 return "🟡"
         for word_pos, word in words_with_pos:
             if any(abs(word_pos - tp) <= WINDOW for tp in taimi_positions):
