@@ -70,11 +70,6 @@ def classify_sentiment(text):
     pos_score = 0
     neg_score = 0
     if taimi_positions:
-        # Questions about Taimi → neutral (no opinion expressed)
-        for tp in taimi_positions:
-            window_text = text_lower[max(0, tp - WINDOW):tp + WINDOW]
-            if '?' in window_text:
-                return "🟡"
         # Mixed-sentiment phrases near Taimi → neutral
         for tp in taimi_positions:
             window_text = text_lower[max(0, tp - WINDOW):tp + WINDOW]
