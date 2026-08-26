@@ -55,6 +55,7 @@ NEGATIVE_WORDS = {
     "nowhere", "upset", "limited", "empty", "zero", "racist", "racism",
     "complaint", "complain", "complains", "quit", "quitting",
     "leaving", "leave", "switching", "switch", "confused", "alternative", "alternatives",
+    "non-functional", "annoying", "mess",
 }
 
 MIXED_WORDS = {"mixed", "mixed reviews", "unsure", "uncertain", "depends", "varies"}
@@ -150,6 +151,7 @@ def _parse_atom(rss_bytes, kind):
             "author": (author_el.text or "unknown") if author_el is not None else "unknown",
             "updated": updated_dt,
             "preview": preview,
+            "content": clean,
             "score": None,
         })
     return entries
@@ -261,7 +263,7 @@ def build_slack_message(entries, query):
                 ts = p["updated"].strftime("%H:%M UTC")
                 score = p.get("score")
                 score_str = f" · ▲ {score}" if score is not None else ""
-                sentiment = classify_sentiment(p["preview"] + " " + p["title"])
+                sentiment = classify_sentiment(p.get("content", p["preview"]) + " " + p["title"])
                 lines.append(f"{sentiment} <{p['url']}|{p['title']}> by u/{p['author']} at {ts}{score_str}")
                 preview = p["preview"]
                 if preview and preview not in p["title"]:
