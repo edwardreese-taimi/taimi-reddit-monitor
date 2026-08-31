@@ -40,6 +40,7 @@ POSITIVE_WORDS = {
     "recommend", "best", "good", "helpful", "perfect", "beautiful", "happy",
     "enjoy", "enjoyed", "enjoying", "like", "liked", "appreciate", "appreciated",
     "safe", "welcoming", "inclusive", "supportive", "glad", "works", "working",
+    "thanks", "thank", "grateful", "success", "finally", "found", "met", "matched",
 }
 
 NEGATIVE_WORDS = {
