@@ -38,7 +38,7 @@ COMMENT_SUBREDDITS = [
 POSITIVE_WORDS = {
     "love", "great", "amazing", "awesome", "excellent", "fantastic", "wonderful",
     "recommend", "best", "good", "helpful", "perfect", "beautiful", "happy",
-    "enjoy", "enjoyed", "enjoying", "like", "liked", "appreciate", "appreciated",
+    "enjoy", "enjoyed", "enjoying", "liked", "appreciate", "appreciated",
     "safe", "welcoming", "inclusive", "supportive", "glad", "works", "working",
     "thanks", "thank", "grateful", "success", "finally", "found", "met", "matched",
 }
@@ -56,7 +56,7 @@ NEGATIVE_WORDS = {
     "nowhere", "upset", "limited", "empty", "zero", "racist", "racism",
     "complaint", "complain", "complains", "quit", "quitting",
     "leaving", "leave", "switching", "switch", "confused", "alternative", "alternatives",
-    "non-functional", "annoying", "mess",
+    "non-functional", "annoying", "mess", "fetishist", "fetishists",
 }
 
 MIXED_WORDS = {"mixed", "mixed reviews", "unsure", "uncertain", "depends", "varies"}
