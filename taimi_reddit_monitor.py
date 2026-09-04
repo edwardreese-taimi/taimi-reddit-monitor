@@ -24,7 +24,7 @@ RETRY_DELAY = 15
 
 FULL_SUBREDDITS = ["taimi_lgbtq_platform"]
 
-OFFICIAL_AUTHORS = {"Taimi_Official", "taimi_official"}
+OFFICIAL_AUTHORS = {"Taimi_Official", "taimi_official", "Edward_Reese"}
 
 COMMENT_SUBREDDITS = [
     "lgbt", "gaybros", "LesbianActually", "AskLesbians", "actuallesbians", "bisexual", "asexual",
