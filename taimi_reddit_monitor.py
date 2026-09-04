@@ -24,6 +24,8 @@ RETRY_DELAY = 15
 
 FULL_SUBREDDITS = ["taimi_lgbtq_platform"]
 
+OFFICIAL_AUTHORS = {"Taimi_Official", "taimi_official"}
+
 COMMENT_SUBREDDITS = [
     "lgbt", "gaybros", "LesbianActually", "AskLesbians", "actuallesbians", "bisexual", "asexual",
     "nonbinary", "trans", "ainbow", "queer", "QueerWomenOfColor",
@@ -266,7 +268,11 @@ def build_slack_message(entries, query):
                 ts = p["updated"].strftime("%H:%M UTC")
                 score = p.get("score")
                 score_str = f" · ▲ {score}" if score is not None else ""
-                sentiment = classify_sentiment(p.get("content", p["preview"]) + " " + p["title"])
+                author = p.get("author", "")
+                if author.lower() in {a.lower() for a in OFFICIAL_AUTHORS}:
+                    sentiment = "🟡"
+                else:
+                    sentiment = classify_sentiment(p.get("content", p["preview"]) + " " + p["title"])
                 lines.append(f"{sentiment} <{p['url']}|{p['title']}> by u/{p['author']} at {ts}{score_str}")
                 preview = p["preview"]
                 if preview and preview not in p["title"]:
