@@ -66,6 +66,11 @@ NEGATIVE_WORDS = {
 
 MIXED_WORDS = {"mixed", "mixed reviews", "unsure", "uncertain", "depends", "varies"}
 
+NEGATIVE_PHRASES = {
+    "straight men", "straight guys", "straight people", "full of men", "too many men",
+    "lots of straight", "full of straight", "mostly straight",
+}
+
 
 def classify_sentiment(text):
     # Only score words near "taimi" mentions so we assess sentiment
@@ -82,6 +87,11 @@ def classify_sentiment(text):
             window_text = text_lower[max(0, tp - WINDOW):tp + WINDOW]
             if any(w in window_text for w in MIXED_WORDS):
                 return "🟡"
+        # Negative phrases near Taimi → red
+        for tp in taimi_positions:
+            window_text = text_lower[max(0, tp - WINDOW):tp + WINDOW]
+            if any(phrase in window_text for phrase in NEGATIVE_PHRASES):
+                return "🔴"
         for word_pos, word in words_with_pos:
             if any(abs(word_pos - tp) <= WINDOW for tp in taimi_positions):
                 if word in POSITIVE_WORDS:
