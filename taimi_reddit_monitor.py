@@ -61,7 +61,7 @@ NEGATIVE_WORDS = {
     "non-functional", "annoying", "mess", "fetishist", "fetishists",
     "awkward", "confusion", "confusing", "spam", "spamming", "unauthorized", "unwanted", "apologize", "apologizing",
     "ai",
-    "shit", "paywall", "locked", "useless", "trash", "disaster",
+    "shit", "paywall", "locked", "useless", "trash", "disaster", "slutty",
 }
 
 MIXED_WORDS = {"mixed", "mixed reviews", "unsure", "uncertain", "depends", "varies"}
