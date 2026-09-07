@@ -61,6 +61,7 @@ NEGATIVE_WORDS = {
     "non-functional", "annoying", "mess", "fetishist", "fetishists",
     "awkward", "confusion", "confusing", "spam", "spamming", "unauthorized", "unwanted", "apologize", "apologizing",
     "ai",
+    "shit", "paywall", "locked", "useless",
 }
 
 MIXED_WORDS = {"mixed", "mixed reviews", "unsure", "uncertain", "depends", "varies"}
@@ -272,7 +273,12 @@ def build_slack_message(entries, query):
                 if author.lower() in {a.lower() for a in OFFICIAL_AUTHORS}:
                     sentiment = "🟡"
                 else:
-                    sentiment = classify_sentiment(p.get("content", p["preview"]) + " " + p["title"])
+                    content_body = p.get("content", p["preview"])
+                    title_text = p["title"]
+                    if "taimi" in title_text.lower() and "taimi" not in content_body.lower():
+                        sentiment = classify_sentiment(content_body)
+                    else:
+                        sentiment = classify_sentiment(content_body + " " + title_text)
                 lines.append(f"{sentiment} <{p['url']}|{p['title']}> by u/{p['author']} at {ts}{score_str}")
                 preview = p["preview"]
                 if preview and preview not in p["title"]:
