@@ -13,7 +13,7 @@ import re
 from datetime import datetime, timezone, timedelta
 
 SEARCH_QUERY = "Taimi"
-EXCLUDED_SUBREDDITS = {"Guildwars2", "dreamcast", "pokemongo", "rdcworld", "MapPorn", "koirajuorut", "occitan", "Eesti", "TwinCitiesFood", "China_irl", "dreamingspanish", "TwitchFollowers", "MumbaiMarketplace", "imaginarymaps", "flightsim", "Semenretention"}
+EXCLUDED_SUBREDDITS = {"Guildwars2", "dreamcast", "pokemongo", "rdcworld", "MapPorn", "koirajuorut", "occitan", "Eesti", "TwinCitiesFood", "China_irl", "dreamingspanish", "TwitchFollowers", "MumbaiMarketplace", "imaginarymaps", "flightsim", "Semenretention", "PokemonPocketTradeCo", "PTCGPTrading", "PTCGPocketTrading", "Samoa"}
 SLACK_CHANNEL = "#taimi-reddit-mentions"
 LOOKBACK_HOURS = 24
 MAX_POSTS = 100
