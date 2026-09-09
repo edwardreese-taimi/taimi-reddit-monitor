@@ -281,13 +281,13 @@ def build_slack_message(entries, query):
                 score_str = f" · ▲ {score}" if score is not None else ""
                 author = p.get("author", "")
                 content_body = p.get("content", p["preview"])
-                    title_text = p["title"]
-                    if "taimi" in title_text.lower() and "taimi" not in content_body.lower():
-                        sentiment = classify_sentiment(content_body)
-                    else:
-                        sentiment = classify_sentiment(content_body + " " + title_text)
-                    if author.lower() in {a.lower() for a in OFFICIAL_AUTHORS} and sentiment == "🔴":
-                        sentiment = "🟡"
+                title_text = p["title"]
+                if "taimi" in title_text.lower() and "taimi" not in content_body.lower():
+                    sentiment = classify_sentiment(content_body)
+                else:
+                    sentiment = classify_sentiment(content_body + " " + title_text)
+                if author.lower() in {a.lower() for a in OFFICIAL_AUTHORS} and sentiment == "🔴":
+                    sentiment = "🟡"
                 lines.append(f"{sentiment} <{p['url']}|{p['title']}> by u/{p['author']} at {ts}{score_str}")
                 preview = p["preview"]
                 if preview and preview not in p["title"]:
