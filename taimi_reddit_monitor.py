@@ -78,7 +78,7 @@ def classify_sentiment(text):
     text_lower = text.lower()
     taimi_positions = [m.start() for m in re.finditer(r'\btaimi\b', text_lower)]
     words_with_pos = [(m.start(), m.group()) for m in re.finditer(r'\b\w+\b', text_lower)]
-    WINDOW = 100  # characters on each side of a "taimi" mention
+    WINDOW = 200  # characters on each side of a "taimi" mention
     pos_score = 0
     neg_score = 0
     if taimi_positions:
