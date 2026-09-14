@@ -68,7 +68,7 @@ MIXED_WORDS = {"mixed", "mixed reviews", "unsure", "uncertain", "depends", "vari
 
 NEGATIVE_PHRASES = {
     "straight men", "straight guys", "straight people", "full of men", "too many men",
-    "lots of straight", "full of straight", "mostly straight", "red flags", "cesspool",
+    "lots of straight", "full of straight", "mostly straight", "chaser", "chasers", "fetishize", "fetishizes", "red flags", "cesspool",
 }
 
 
