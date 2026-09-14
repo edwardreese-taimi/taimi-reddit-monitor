@@ -58,7 +58,7 @@ NEGATIVE_WORDS = {
     "nowhere", "upset", "limited", "empty", "zero", "racist", "racism",
     "complaint", "complain", "complains", "quit", "quitting",
     "leaving", "leave", "switching", "switch", "confused", "alternative", "alternatives",
-    "non-functional", "annoying", "mess", "fetishist", "fetishists",
+    "non-functional", "annoying", "mess", "fetishist", "fetishists", "fetishize", "fetishizing", "cesspit",
     "awkward", "confusion", "confusing", "spam", "spamming", "unauthorized", "unwanted", "apologize", "apologizing",
     "ai",
     "shit", "paywall", "locked", "useless", "trash", "disaster", "slutty",
@@ -68,7 +68,7 @@ MIXED_WORDS = {"mixed", "mixed reviews", "unsure", "uncertain", "depends", "vari
 
 NEGATIVE_PHRASES = {
     "straight men", "straight guys", "straight people", "full of men", "too many men",
-    "lots of straight", "full of straight", "mostly straight",
+    "lots of straight", "full of straight", "mostly straight", "red flags", "cesspool",
 }
 
 
