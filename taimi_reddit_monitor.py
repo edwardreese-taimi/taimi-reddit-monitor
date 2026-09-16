@@ -164,7 +164,7 @@ def _parse_atom(rss_bytes, kind):
             "title": (title_el.text or "(no title)") if title_el is not None else "(no title)",
             "url": link,
             "subreddit": subreddit,
-            "author": (author_el.text or "unknown") if author_el is not None else "unknown",
+            "author": re.sub(r"^/?u/", "", (author_el.text or "unknown") if author_el is not None else "unknown"),
             "updated": updated_dt,
             "preview": preview,
             "content": clean,
