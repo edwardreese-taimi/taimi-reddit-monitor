@@ -58,7 +58,7 @@ NEGATIVE_WORDS = {
     "nowhere", "upset", "limited", "empty", "zero", "racist", "racism",
     "complaint", "complain", "complains", "quit", "quitting",
     "leaving", "leave", "switching", "switch", "confused", "alternative", "alternatives",
-    "non-functional", "annoying", "mess", "fetishist", "fetishists", "fetishize", "fetishizing", "cesspit",
+    "non-functional", "glitch", "glitches", "glitchy", "bug", "bugs", "buggy", "error", "errors", "annoying", "mess", "fetishist", "fetishists", "fetishize", "fetishizing", "cesspit",
     "awkward", "confusion", "confusing", "spam", "spamming", "unauthorized", "unwanted", "apologize", "apologizing",
     "ai",
     "shit", "paywall", "locked", "useless", "trash", "disaster", "slutty",
