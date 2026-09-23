@@ -34,7 +34,7 @@ COMMENT_SUBREDDITS = [
     "relationships", "relationship_advice", "relationships_advice",
     "Sissy", "PNW_Sissies", "sissyology", "bisexualafterdark",
     "countttt", "BDSMsapphic", "phallo", "BlackTransPeople", "transplace", "transfurs",
-    "femboyjerkbud", "TransNewWorldOrder", "StraightTransGirls",
+    "femboyjerkbud", "TransNewWorldOrder", "StraightTransGirls", "Advice",
 ]
 
 POSITIVE_WORDS = {
@@ -61,7 +61,7 @@ NEGATIVE_WORDS = {
     "non-functional", "glitch", "glitches", "glitchy", "bug", "bugs", "buggy", "error", "errors", "annoying", "mess", "ridiculous", "overwhelmed", "inane", "fetishist", "fetishists", "fetishize", "fetishizing", "cesspit",
     "awkward", "confusion", "confusing", "spam", "spamming", "unauthorized", "unwanted", "apologize", "apologizing",
     "ai",
-    "shit", "paywall", "locked", "useless", "trash", "disaster", "slutty",
+    "shit", "paywall", "cheating", "cheated", "cheat", "nudes", "nude", "porn", "betrayed", "betrayal", "locked", "useless", "trash", "disaster", "slutty",
 }
 
 MIXED_WORDS = {"mixed", "mixed reviews", "unsure", "uncertain", "depends", "varies"}
