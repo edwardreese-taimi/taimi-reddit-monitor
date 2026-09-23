@@ -54,7 +54,7 @@ NEGATIVE_WORDS = {
     "uncomfortable", "chasers", "chaser", "harass", "harassing", "harassed", "harassment",
     "ghosted", "creeps", "creep", "stalk", "stalking", "stalker", "unmatched", "bots", "bot",
     "frustrating", "frustrated", "useless", "waste", "dead", "nobody",
-    "desperate", "desperately", "drought", "lonely", "alone",
+    "desperate", "desperately", "drought", "lonely", "alone", "sad", "unavailable", "tired", "used",
     "nowhere", "upset", "limited", "empty", "zero", "racist", "racism",
     "complaint", "complain", "complains", "quit", "quitting",
     "leaving", "leave", "switching", "switch", "confused", "alternative", "alternatives",
