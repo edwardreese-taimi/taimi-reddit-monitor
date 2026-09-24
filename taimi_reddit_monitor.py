@@ -58,7 +58,7 @@ NEGATIVE_WORDS = {
     "nowhere", "upset", "limited", "empty", "zero", "racist", "racism",
     "complaint", "complain", "complains", "quit", "quitting",
     "leaving", "leave", "switching", "switch", "confused", "alternative", "alternatives",
-    "non-functional", "glitch", "glitches", "glitchy", "bug", "bugs", "buggy", "error", "errors", "annoying", "mess", "ridiculous", "overwhelmed", "inane", "fetishist", "fetishists", "fetishize", "fetishizing", "cesspit",
+    "non-functional", "glitch", "glitches", "glitchy", "bug", "bugs", "buggy", "error", "errors", "annoying", "mess", "ridiculous", "overwhelmed", "inane", "exhausting", "fetishist", "fetishists", "fetishize", "fetishizing", "cesspit",
     "awkward", "confusion", "confusing", "spam", "spamming", "unauthorized", "unwanted", "apologize", "apologizing",
     "ai",
     "shit", "paywall", "cheating", "cheated", "cheat", "nudes", "nude", "porn", "betrayed", "betrayal", "locked", "useless", "trash", "disaster", "slutty",
@@ -68,7 +68,7 @@ MIXED_WORDS = {"mixed", "mixed reviews", "unsure", "uncertain", "depends", "vari
 
 NEGATIVE_PHRASES = {
     "straight men", "straight guys", "straight people", "full of men", "too many men",
-    "lots of straight", "full of straight", "mostly straight", "chaser", "chasers", "fetishize", "fetishizes", "red flags", "cesspool", "shit show", "shitshow",
+    "lots of straight", "full of straight", "mostly straight", "chaser", "chasers", "fetishize", "fetishizes", "red flags", "cesspool", "shit show", "shitshow", "gave up",
 }
 
 
