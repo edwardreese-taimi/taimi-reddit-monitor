@@ -47,7 +47,7 @@ POSITIVE_WORDS = {
 
 NEGATIVE_WORDS = {
     "hate", "terrible", "awful", "worst", "bad", "horrible", "disgusting",
-    "scam", "fake", "dangerous", "delete", "banned", "ban", "inappropriate",
+    "scam", "fake", "dangerous", "delete", "banned", "ban", "blocked", "inappropriate",
     "offensive", "creepy", "disappointing", "disappointed", "ugly",
     "problem", "issue", "broken", "failed", "fail", "sucks", "suck",
     "predatory", "toxic", "abuse", "abusive", "gross", "sketchy",
