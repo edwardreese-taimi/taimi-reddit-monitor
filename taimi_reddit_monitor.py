@@ -64,7 +64,7 @@ NEGATIVE_WORDS = {
     "shit", "paywall", "cheating", "cheated", "cheat", "nudes", "nude", "porn", "betrayed", "betrayal", "locked", "useless", "trash", "disaster", "slutty",
 }
 
-MIXED_WORDS = {"mixed", "mixed reviews", "unsure", "uncertain", "depends", "varies"}
+MIXED_WORDS = {"mixed", "mixed reviews", "unsure", "uncertain", "depends", "varies", "met on", "found on", "matched on"}
 
 NEGATIVE_PHRASES = {
     "straight men", "straight guys", "straight people", "full of men", "too many men",
