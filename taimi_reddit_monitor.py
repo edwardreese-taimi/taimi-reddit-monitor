@@ -26,6 +26,9 @@ FULL_SUBREDDITS = ["taimi_lgbtq_platform"]
 
 OFFICIAL_AUTHORS = {"Taimi_Official", "taimi_official", "Edward_Reese", "RomeoTaimiProduct"}
 
+# Subreddits where any Taimi mention is inherently negative context (e.g. screenshot-shaming, bad behavior subs)
+NEGATIVE_CONTEXT_SUBREDDITS = {"countttt", "Sissy", "PNW_Sissies", "sissyology", "bisexualafterdark", "femboyjerkbud"}
+
 COMMENT_SUBREDDITS = [
     "lgbt", "gaybros", "LesbianActually", "AskLesbians", "actuallesbians", "bisexual", "asexual",
     "nonbinary", "trans", "ainbow", "queer", "QueerWomenOfColor",
@@ -288,6 +291,8 @@ def build_slack_message(entries, query):
                     sentiment = classify_sentiment(content_body + " " + title_text)
                 if author.lower() in {a.lower() for a in OFFICIAL_AUTHORS} and sentiment == "🔴":
                     sentiment = "🟡"
+                if p["subreddit"].lower() in {s.lower() for s in NEGATIVE_CONTEXT_SUBREDDITS}:
+                    sentiment = "🔴"
                 lines.append(f"{sentiment} <{p['url']}|{p['title']}> by u/{p['author']} at {ts}{score_str}")
                 preview = p["preview"]
                 if preview and preview not in p["title"]:
