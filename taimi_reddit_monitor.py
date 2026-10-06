@@ -65,13 +65,14 @@ NEGATIVE_WORDS = {
     "awkward", "confusion", "confusing", "spam", "spamming", "unauthorized", "unwanted", "apologize", "apologizing",
     "ai",
     "shit", "paywall", "cheating", "cheated", "cheat", "nudes", "nude", "porn", "betrayed", "betrayal", "locked", "useless", "trash", "disaster", "slutty",
+    "ignoring", "ignores", "overrides", "overriding", "resets", "resetting",
 }
 
 MIXED_WORDS = {"mixed", "mixed reviews", "unsure", "uncertain", "depends", "varies", "met on", "found on", "matched on"}
 
 NEGATIVE_PHRASES = {
     "straight men", "straight guys", "straight people", "full of men", "too many men",
-    "lots of straight", "full of straight", "mostly straight", "chaser", "chasers", "fetishize", "fetishizes", "red flags", "cesspool", "shit show", "shitshow", "gave up", "tossing and turning", "any luck", "no luck",
+    "lots of straight", "full of straight", "mostly straight", "chaser", "chasers", "fetishize", "fetishizes", "red flags", "cesspool", "shit show", "shitshow", "gave up", "tossing and turning", "any luck", "no luck", "don't work", "doesn't work", "won't work", "please fix", "please let me", "keep resetting", "not working",
 }
 
 
