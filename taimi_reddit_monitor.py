@@ -33,7 +33,7 @@ COMMENT_SUBREDDITS = [
     "lgbt", "gaybros", "LesbianActually", "AskLesbians", "actuallesbians", "bisexual", "asexual",
     "nonbinary", "trans", "ainbow", "queer", "QueerWomenOfColor",
     "FTMStraight", "FemboysDating", "feminineboys",
-    "dating_advice", "OnlineDating", "datingapps", "Tinder",
+    "dating_advice", "OnlineDating", "datingapps", "Tinder", "latebloomerlesbians", "4tran4",
     "relationships", "relationship_advice", "relationships_advice",
     "Sissy", "PNW_Sissies", "sissyology", "bisexualafterdark",
     "countttt", "BDSMsapphic", "phallo", "BlackTransPeople", "transplace", "transfurs",
@@ -44,7 +44,7 @@ POSITIVE_WORDS = {
     "love", "great", "amazing", "awesome", "excellent", "fantastic", "wonderful",
     "recommend", "best", "good", "helpful", "perfect", "beautiful", "happy",
     "enjoy", "enjoyed", "enjoying", "liked", "appreciate", "appreciated",
-    "safe", "welcoming", "inclusive", "supportive", "glad", "works", "working",
+    "safe", "welcoming", "inclusive", "supportive", "glad",
     "thanks", "thank", "grateful", "success", "finally", "found", "met", "matched",
 }
 
