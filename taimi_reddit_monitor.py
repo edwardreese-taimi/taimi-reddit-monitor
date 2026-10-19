@@ -221,7 +221,7 @@ def fetch_comments_from_subreddits(query, subreddits):
             continue
         entries = _parse_atom(data, "comment")
         for e in entries:
-            if query_lower in e["preview"].lower() or query_lower in e["title"].lower():
+            if query_lower in e["preview"].lower() or query_lower in e["content"].lower():
                 all_comments.append(e)
     return all_comments
 
