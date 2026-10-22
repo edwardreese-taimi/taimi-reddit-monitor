@@ -12,7 +12,7 @@ import time
 import re
 from datetime import datetime, timezone, timedelta
 
-SEARCH_QUERY = "Taimi"
+SEARCH_QUERY = "Taimi
 EXCLUDED_SUBREDDITS = {"Guildwars2", "dreamcast", "pokemongo", "rdcworld", "MapPorn", "koirajuorut", "occitan", "Eesti", "TwinCitiesFood", "China_irl", "dreamingspanish", "TwitchFollowers", "MumbaiMarketplace", "imaginarymaps", "flightsim", "Semenretention", "IDMyCat", "PokemonPocketTradeCo", "PTCGPTrading", "PTCGPocketTrading", "Samoa", "FloorPlanPorn", "NFLFantasy_Football"}
 SLACK_CHANNEL = "#taimi-reddit-mentions"
 LOOKBACK_HOURS = 24
@@ -57,7 +57,7 @@ NEGATIVE_WORDS = {
     "uncomfortable", "chasers", "chaser", "harass", "harassing", "harassed", "harassment",
     "ghosted", "creeps", "creep", "stalk", "stalking", "stalker", "unmatched", "bots", "bot",
     "frustrating", "frustrated", "useless", "waste", "dead", "nobody",
-    "desperate", "desperately", "drought", "lonely", "alone", "sad", "unavailable", "tired", "used",
+    "desperate", "desperately", "drought", "unavailable", "tired", "used",
     "nowhere", "upset", "limited", "empty", "zero", "racist", "racism",
     "complaint", "complain", "complains", "quit", "quitting",
     "leaving", "leave", "switching", "switch", "confused", "alternative", "alternatives",
