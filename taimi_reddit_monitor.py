@@ -45,7 +45,7 @@ POSITIVE_WORDS = {
     "recommend", "best", "good", "helpful", "perfect", "beautiful", "happy",
     "enjoy", "enjoyed", "enjoying", "liked", "appreciate", "appreciated",
     "safe", "welcoming", "inclusive", "supportive", "glad",
-    "thanks", "thank", "grateful", "success", "finally", "found", "met", "matched",
+    "thanks", "thank", "grateful", "success", "finally", "met", "matched",
 }
 
 NEGATIVE_WORDS = {
@@ -58,7 +58,7 @@ NEGATIVE_WORDS = {
     "ghosted", "creeps", "creep", "stalk", "stalking", "stalker", "unmatched", "bots", "bot",
     "frustrating", "frustrated", "useless", "waste", "dead", "nobody",
     "desperate", "desperately", "drought", "unavailable", "tired", "used",
-    "nowhere", "upset", "limited", "empty", "zero", "racist", "racism",
+    "nowhere", "upset", "limited", "suspicious", "empty", "zero", "racist", "racism",
     "complaint", "complain", "complains", "quit", "quitting",
     "leaving", "leave", "switching", "switch", "confused", "alternative", "alternatives",
     "non-functional", "glitch", "glitches", "glitchy", "bug", "bugs", "buggy", "error", "errors", "annoying", "mess", "ridiculous", "overwhelmed", "inane", "exhausting", "fetishist", "fetishists", "fetishize", "fetishizing", "cesspit",
