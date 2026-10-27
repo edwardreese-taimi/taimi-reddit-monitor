@@ -15,7 +15,7 @@ from datetime import datetime, timezone, timedelta
 SEARCH_QUERY = "Taimi"
 EXCLUDED_SUBREDDITS = {"Guildwars2", "dreamcast", "pokemongo", "rdcworld", "MapPorn", "koirajuorut", "occitan", "Eesti", "TwinCitiesFood", "China_irl", "dreamingspanish", "TwitchFollowers", "MumbaiMarketplace", "imaginarymaps", "flightsim", "Semenretention", "IDMyCat", "PokemonPocketTradeCo", "PTCGPTrading", "PTCGPocketTrading", "Samoa", "FloorPlanPorn", "NFLFantasy_Football", "DynastyFFTradeAdvice"}
 SLACK_CHANNEL = "#taimi-reddit-mentions"
-LOOKBACK_HOURS = 24
+LOOKBACK_HOURS = 26
 MAX_POSTS = 100
 MAX_COMMENTS_PER_SUB = 100
 USER_AGENT = "TaimiMonitor/1.0 (appflame marketing; daily digest)"
