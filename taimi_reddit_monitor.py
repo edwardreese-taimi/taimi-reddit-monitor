@@ -18,9 +18,9 @@ SLACK_CHANNEL = "#taimi-reddit-mentions"
 LOOKBACK_HOURS = 26
 MAX_POSTS = 100
 MAX_COMMENTS_PER_SUB = 100
-USER_AGENT = "TaimiMonitor/1.0 (appflame marketing; daily digest)"
+USER_AGENT = "Mozilla/5.0 (compatible; TaimiMonitor/1.0; +mailto:edward.reese@appflame.com)"
 MAX_RETRIES = 3
-RETRY_DELAY = 60
+RETRY_DELAY = 15
 
 FULL_SUBREDDITS = ["taimi_lgbtq_platform"]
 
