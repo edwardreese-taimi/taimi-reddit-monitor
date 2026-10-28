@@ -75,6 +75,9 @@ NEGATIVE_PHRASES = {
     "lots of straight", "full of straight", "mostly straight", "chaser", "chasers", "fetishize", "fetishizes", "red flags", "cesspool", "shit show", "shitshow", "gave up", "tossing and turning", "any luck", "no luck", "don't work", "doesn't work", "won't work", "please fix", "please let me", "keep resetting", "not working",
 }
 
+# HTTP status codes worth retrying (transient server/rate-limit errors)
+TRANSIENT_HTTP_CODES = {429, 500, 502, 503, 504}
+
 
 def classify_sentiment(text):
     # Only score words near "taimi" mentions so we assess sentiment
@@ -116,21 +119,26 @@ def classify_sentiment(text):
     return "🟡"
 
 def _fetch_url(url):
+    """Fetch a URL with retries on transient HTTP and network errors."""
     for attempt in range(1, MAX_RETRIES + 1):
         req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
         try:
             with urllib.request.urlopen(req, timeout=20) as resp:
                 return resp.read()
         except urllib.error.HTTPError as e:
-            if e.code == 429 and attempt < MAX_RETRIES:
-                print(f"    429 rate-limit, waiting {RETRY_DELAY}s (attempt {attempt})...")
+            if e.code in TRANSIENT_HTTP_CODES and attempt < MAX_RETRIES:
+                print(f"    HTTP {e.code} (attempt {attempt}/{MAX_RETRIES}), retrying in {RETRY_DELAY}s...")
                 time.sleep(RETRY_DELAY)
             else:
-                print(f"    HTTP {e.code} fetching {url} — skipping")
+                print(f"    HTTP {e.code} fetching {url} — giving up after {attempt} attempt(s)")
                 return None
-        except Exception as exc:
-            print(f"    Error fetching {url}: {exc} — skipping")
-            return None
+        except (urllib.error.URLError, OSError) as exc:
+            if attempt < MAX_RETRIES:
+                print(f"    Network error (attempt {attempt}/{MAX_RETRIES}): {exc}, retrying in {RETRY_DELAY}s...")
+                time.sleep(RETRY_DELAY)
+            else:
+                print(f"    Network error fetching {url}: {exc} — giving up")
+                return None
     return None
 
 def _parse_atom(rss_bytes, kind):
@@ -176,6 +184,36 @@ def _parse_atom(rss_bytes, kind):
         })
     return entries
 
+def _parse_json_posts(json_bytes, subreddit):
+    """Parse Reddit JSON /new.json response into entry dicts (fallback when RSS fails)."""
+    try:
+        data = json.loads(json_bytes)
+        children = data["data"]["children"]
+        posts = []
+        for child in children:
+            p = child["data"]
+            created_utc = p.get("created_utc", 0)
+            updated_dt = datetime.fromtimestamp(created_utc, tz=timezone.utc)
+            permalink = p.get("permalink", "")
+            url = f"https://www.reddit.com{permalink}" if permalink else ""
+            selftext = p.get("selftext", "") or ""
+            preview = selftext[:200] + ("…" if len(selftext) > 200 else "")
+            posts.append({
+                "kind": "post",
+                "title": p.get("title", "(no title)"),
+                "url": url,
+                "subreddit": p.get("subreddit", subreddit),
+                "author": p.get("author", "unknown"),
+                "updated": updated_dt,
+                "preview": preview,
+                "content": selftext,
+                "score": p.get("score"),
+            })
+        return posts
+    except Exception as exc:
+        print(f"    Error parsing JSON for r/{subreddit}: {exc}")
+        return []
+
 def fetch_posts(query):
     encoded = urllib.request.quote(query)
     url = f"https://www.reddit.com/search.rss?q={encoded}&sort=new&t=day&limit={MAX_POSTS}"
@@ -197,17 +235,34 @@ def fetch_comments_global(query):
     return [e for e in entries if e["kind"] == "comment"]
 
 def fetch_all_posts_from_subreddits(subreddits):
+    """Fetch all posts from brand subreddits. Falls back to JSON API if RSS fails."""
     all_posts = []
+    failed_subs = []
     for sub in subreddits:
-        url = f"https://www.reddit.com/r/{sub}/new.rss?limit={MAX_POSTS}"
-        print(f"  Fetching all posts from r/{sub}...")
-        data = _fetch_url(url)
+        # Try RSS first
+        rss_url = f"https://www.reddit.com/r/{sub}/new.rss?limit={MAX_POSTS}"
+        print(f"  Fetching all posts from r/{sub} (RSS)...")
+        data = _fetch_url(rss_url)
         time.sleep(0.5)
-        if data is None:
-            continue
-        entries = _parse_atom(data, "post")
-        all_posts.extend(e for e in entries if e["kind"] == "post")
-    return all_posts
+        if data is not None:
+            entries = _parse_atom(data, "post")
+            posts = [e for e in entries if e["kind"] == "post"]
+            print(f"    {len(posts)} posts via RSS")
+            all_posts.extend(posts)
+        else:
+            # Fallback: Reddit JSON API
+            print(f"  RSS failed for r/{sub} — trying JSON API fallback...")
+            json_url = f"https://www.reddit.com/r/{sub}/new.json?limit={MAX_POSTS}&raw_json=1"
+            json_data = _fetch_url(json_url)
+            time.sleep(0.5)
+            if json_data is not None:
+                posts = _parse_json_posts(json_data, sub)
+                print(f"    {len(posts)} posts via JSON fallback")
+                all_posts.extend(posts)
+            else:
+                print(f"  WARNING: All fetch attempts failed for r/{sub} — posts will be missing from digest!")
+                failed_subs.append(sub)
+    return all_posts, failed_subs
 
 def fetch_comments_from_subreddits(query, subreddits):
     query_lower = query.lower()
@@ -260,16 +315,17 @@ def filter_entries(entries, excluded, hours):
         result.append(e)
     return result
 
-def build_slack_message(entries, query):
+def build_slack_message(entries, query, failed_subs=None):
     today = datetime.now(timezone.utc).strftime("%B %d, %Y")
     posts    = [e for e in entries if e["kind"] == "post"]
     comments = [e for e in entries if e["kind"] == "comment"]
+    lines = [f'*Reddit Mentions of "{query}" — {today}*']
+    if failed_subs:
+        lines.append(f"⚠️ *Fetch failed for: {', '.join('r/' + s for s in failed_subs)} — posts from these subreddits may be missing!*")
     if not entries:
-        return f'*Reddit Mentions of "{query}" — {today}*\n\nNo new mentions found in the past 24 hours.'
-    lines = [
-        f'*Reddit Mentions of "{query}" — {today}*',
-        f"_{len(posts)} post(s) · {len(comments)} comment(s) in the past 24h_",
-    ]
+        lines.append("\nNo new mentions found in the past 24 hours.")
+        return "\n".join(lines)
+    lines.append(f"_{len(posts)} post(s) · {len(comments)} comment(s) in the past 24h_")
     def render_section(label, items):
         if not items:
             return
@@ -330,8 +386,10 @@ def main():
     print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Taimi Reddit Monitor starting...")
     posts = fetch_posts(SEARCH_QUERY)
     print(f"  Posts found (keyword search): {len(posts)}")
-    full_sub_posts = fetch_all_posts_from_subreddits(FULL_SUBREDDITS)
+    full_sub_posts, failed_subs = fetch_all_posts_from_subreddits(FULL_SUBREDDITS)
     print(f"  Posts found (full subreddits): {len(full_sub_posts)}")
+    if failed_subs:
+        print(f"  FETCH FAILURES: {failed_subs}")
     global_comments = fetch_comments_global(SEARCH_QUERY)
     print(f"  Comments found (global search): {len(global_comments)}")
     comments = fetch_comments_from_subreddits(SEARCH_QUERY, COMMENT_SUBREDDITS)
@@ -342,7 +400,7 @@ def main():
     if filtered:
         print("  Fetching upvote scores...")
         filtered = enrich_with_scores(filtered)
-    message = build_slack_message(filtered, SEARCH_QUERY)
+    message = build_slack_message(filtered, SEARCH_QUERY, failed_subs=failed_subs or None)
     post_to_slack(message, SLACK_CHANNEL)
     print("Done.")
 
