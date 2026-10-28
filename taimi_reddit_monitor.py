@@ -20,7 +20,7 @@ MAX_POSTS = 100
 MAX_COMMENTS_PER_SUB = 100
 USER_AGENT = "TaimiMonitor/1.0 (appflame marketing; daily digest)"
 MAX_RETRIES = 3
-RETRY_DELAY = 15
+RETRY_DELAY = 60
 
 FULL_SUBREDDITS = ["taimi_lgbtq_platform"]
 
@@ -384,12 +384,12 @@ def post_to_slack(message, channel):
 
 def main():
     print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Taimi Reddit Monitor starting...")
-    posts = fetch_posts(SEARCH_QUERY)
-    print(f"  Posts found (keyword search): {len(posts)}")
     full_sub_posts, failed_subs = fetch_all_posts_from_subreddits(FULL_SUBREDDITS)
     print(f"  Posts found (full subreddits): {len(full_sub_posts)}")
     if failed_subs:
         print(f"  FETCH FAILURES: {failed_subs}")
+    posts = fetch_posts(SEARCH_QUERY)
+    print(f"  Posts found (keyword search): {len(posts)}")
     global_comments = fetch_comments_global(SEARCH_QUERY)
     print(f"  Comments found (global search): {len(global_comments)}")
     comments = fetch_comments_from_subreddits(SEARCH_QUERY, COMMENT_SUBREDDITS)
