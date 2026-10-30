@@ -72,7 +72,7 @@ MIXED_WORDS = {"mixed", "mixed reviews", "unsure", "uncertain", "depends", "vari
 
 NEGATIVE_PHRASES = {
     "straight men", "straight guys", "straight people", "full of men", "too many men",
-    "lots of straight", "full of straight", "mostly straight", "chaser", "chasers", "fetishize", "fetishizes", "red flags", "cesspool", "shit show", "shitshow", "gave up", "tossing and turning", "any luck", "no luck", "don't work", "doesn't work", "won't work", "please fix", "please let me", "keep resetting", "not working",
+    "lots of straight", "full of straight", "mostly straight", "chaser", "chasers", "fetishize", "fetishizes", "red flags", "cesspool", "shit show", "shitshow", "gave up", "tossing and turning", "any luck", "no luck", "don't work", "doesn't work", "won't work", "please fix", "please let me", "keep resetting", "not working", "stay away",
 }
 
 # HTTP status codes worth retrying (transient server/rate-limit errors)
