@@ -346,8 +346,11 @@ def build_slack_message(entries, query, failed_subs=None):
                     sentiment = classify_sentiment(content_body)
                 else:
                     sentiment = classify_sentiment(content_body + " " + title_text)
-                if author.lower() in {a.lower() for a in OFFICIAL_AUTHORS} and sentiment == "🔴":
-                    sentiment = "🟡"
+                if author.lower() in {a.lower() for a in OFFICIAL_AUTHORS}:
+                    if sentiment == "🔴":
+                        sentiment = "🟡"
+                    elif sentiment == "🟡":
+                        sentiment = "🟢"
                 if p["subreddit"].lower() in {s.lower() for s in NEGATIVE_CONTEXT_SUBREDDITS}:
                     sentiment = "🔴"
                 lines.append(f"{sentiment} <{p['url']}|{p['title']}> by u/{p['author']} at {ts}{score_str}")
