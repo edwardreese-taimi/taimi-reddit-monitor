@@ -350,7 +350,10 @@ def build_slack_message(entries, query, failed_subs=None):
                     if sentiment == "🔴":
                         sentiment = "🟡"
                     elif sentiment == "🟡":
-                        sentiment = "🟢"
+                        # Question posts (title ends with ?) stay yellow; articles/announcements go green
+                        title = p.get("title", "")
+                        if not title.rstrip().endswith("?"):
+                            sentiment = "🟢"
                 if p["subreddit"].lower() in {s.lower() for s in NEGATIVE_CONTEXT_SUBREDDITS}:
                     sentiment = "🔴"
                 lines.append(f"{sentiment} <{p['url']}|{p['title']}> by u/{p['author']} at {ts}{score_str}")
