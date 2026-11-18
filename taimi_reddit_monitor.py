@@ -10,6 +10,7 @@ import xml.etree.ElementTree as ET
 import json
 import time
 import re
+import base64
 from datetime import datetime, timezone, timedelta
 
 SEARCH_QUERY = "Taimi"
@@ -21,6 +22,8 @@ MAX_COMMENTS_PER_SUB = 100
 USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 MAX_RETRIES = 3
 RETRY_DELAY = 15
+
+REDDIT_TOKEN = None  # Set in main() after OAuth exchange
 
 FULL_SUBREDDITS = ["taimi_lgbtq_platform"]
 
@@ -118,10 +121,87 @@ def classify_sentiment(text):
         return "🔴"
     return "🟡"
 
+def get_reddit_token():
+    """Exchange client_id/secret for an OAuth bearer token (client_credentials)."""
+    import os
+    client_id = os.environ.get("REDDIT_CLIENT_ID", "")
+    client_secret = os.environ.get("REDDIT_CLIENT_SECRET", "")
+    if not client_id or not client_secret:
+        print("  Reddit OAuth: no credentials, using anonymous access")
+        return None
+    creds = base64.b64encode(f"{client_id}:{client_secret}".encode()).decode()
+    req = urllib.request.Request(
+        "https://www.reddit.com/api/v1/access_token",
+        data=b"grant_type=client_credentials",
+        headers={
+            "Authorization": f"Basic {creds}",
+            "User-Agent": USER_AGENT,
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=20) as resp:
+            token = json.loads(resp.read()).get("access_token")
+        print("  Reddit OAuth: authenticated successfully")
+        return token
+    except Exception as exc:
+        print(f"  Reddit OAuth: failed ({exc}), using anonymous access")
+        return None
+
+
+def _parse_json_listing(data, default_kind):
+    """Parse a Reddit JSON listing into our standard entry format."""
+    try:
+        parsed = json.loads(data)
+    except Exception:
+        return []
+    children = parsed.get("data", {}).get("children", [])
+    entries = []
+    for child in children:
+        kind_code = child.get("kind", "")
+        d = child.get("data", {})
+        if kind_code == "t3":
+            kind = "post"
+            title = d.get("title", "(no title)")
+            content_text = d.get("selftext", "")
+        elif kind_code == "t1":
+            kind = "comment"
+            title = d.get("link_title", "(comment)")
+            content_text = d.get("body", "")
+        else:
+            kind = default_kind
+            title = d.get("title", d.get("link_title", "(no title)"))
+            content_text = d.get("selftext", d.get("body", ""))
+        permalink = d.get("permalink", "")
+        url = f"https://www.reddit.com{permalink}" if permalink else ""
+        subreddit = d.get("subreddit", "unknown")
+        author = d.get("author", "unknown")
+        created_utc = d.get("created_utc", 0)
+        updated_dt = datetime.fromtimestamp(created_utc, tz=timezone.utc)
+        score = d.get("score")
+        preview = content_text[:200] + ("…" if len(content_text) > 200 else "")
+        entries.append({
+            "kind": kind,
+            "title": title,
+            "url": url,
+            "subreddit": subreddit,
+            "author": author,
+            "updated": updated_dt,
+            "preview": preview,
+            "content": content_text,
+            "score": score,
+        })
+    return entries
+
+
 def _fetch_url(url):
     """Fetch a URL with retries on transient HTTP and network errors."""
+    headers = {"User-Agent": USER_AGENT}
+    if REDDIT_TOKEN and url.startswith("https://oauth.reddit.com"):
+        headers["Authorization"] = f"Bearer {REDDIT_TOKEN}"
     for attempt in range(1, MAX_RETRIES + 1):
-        req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+        req = urllib.request.Request(url, headers=headers)
         try:
             with urllib.request.urlopen(req, timeout=20) as resp:
                 return resp.read()
@@ -235,33 +315,24 @@ def fetch_comments_global(query):
     return [e for e in entries if e["kind"] == "comment"]
 
 def fetch_all_posts_from_subreddits(subreddits):
-    """Fetch all posts from brand subreddits. Falls back to JSON API if RSS fails."""
     all_posts = []
     failed_subs = []
     for sub in subreddits:
-        # Try RSS first
-        rss_url = f"https://www.reddit.com/r/{sub}/new.rss?limit={MAX_POSTS}"
-        print(f"  Fetching all posts from r/{sub} (RSS)...")
-        data = _fetch_url(rss_url)
-        time.sleep(0.5)
-        if data is not None:
-            entries = _parse_atom(data, "post")
-            posts = [e for e in entries if e["kind"] == "post"]
-            print(f"    {len(posts)} posts via RSS")
-            all_posts.extend(posts)
+        if REDDIT_TOKEN:
+            url = f"https://oauth.reddit.com/r/{sub}/new?limit={MAX_POSTS}"
         else:
-            # Fallback: Reddit JSON API
-            print(f"  RSS failed for r/{sub} — trying JSON API fallback...")
-            json_url = f"https://www.reddit.com/r/{sub}/new.json?limit={MAX_POSTS}&raw_json=1"
-            json_data = _fetch_url(json_url)
-            time.sleep(0.5)
-            if json_data is not None:
-                posts = _parse_json_posts(json_data, sub)
-                print(f"    {len(posts)} posts via JSON fallback")
-                all_posts.extend(posts)
-            else:
-                print(f"  WARNING: All fetch attempts failed for r/{sub} — posts will be missing from digest!")
-                failed_subs.append(sub)
+            url = f"https://www.reddit.com/r/{sub}/new.rss?limit={MAX_POSTS}"
+        print(f"  Fetching all posts from r/{sub}...")
+        data = _fetch_url(url)
+        time.sleep(0.5)
+        if data is None:
+            failed_subs.append(sub)
+            continue
+        if REDDIT_TOKEN:
+            entries = _parse_json_listing(data, "post")
+        else:
+            entries = _parse_atom(data, "post")
+        all_posts.extend(e for e in entries if e["kind"] == "post")
     return all_posts, failed_subs
 
 def fetch_comments_from_subreddits(query, subreddits):
@@ -389,6 +460,8 @@ def post_to_slack(message, channel):
         print("SLACK_MESSAGE_END")
 
 def main():
+    global REDDIT_TOKEN
+    REDDIT_TOKEN = get_reddit_token()
     print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Taimi Reddit Monitor starting...")
     full_sub_posts, failed_subs = fetch_all_posts_from_subreddits(FULL_SUBREDDITS)
     print(f"  Posts found (full subreddits): {len(full_sub_posts)}")
