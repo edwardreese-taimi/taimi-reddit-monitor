@@ -18,7 +18,7 @@ SLACK_CHANNEL = "#taimi-reddit-mentions"
 LOOKBACK_HOURS = 26
 MAX_POSTS = 100
 MAX_COMMENTS_PER_SUB = 100
-USER_AGENT = "Mozilla/5.0 (compatible; TaimiMonitor/1.0; +mailto:edward.reese@appflame.com)"
+USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 MAX_RETRIES = 3
 RETRY_DELAY = 15
 
